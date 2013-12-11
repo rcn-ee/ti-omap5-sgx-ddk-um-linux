@@ -36,7 +36,7 @@ Highlights
 This is version 1.9.11 of the TI DDK. It is based on IMG's
 1.9 DDK post-beta engineering drop (ED2253347) delivery to TI.
 
-This release supports Wayland 1.0.6
+This release supports Wayland 1.0.6 and X11
 
 DDK dependencies: gcc 4.7.3, glibc 2.15, libdrm 2.4.41, libgbm 9.0.0, Wayland
 1.0.6
@@ -45,7 +45,7 @@ DDK dependencies: gcc 4.7.3, glibc 2.15, libdrm 2.4.41, libgbm 9.0.0, Wayland
 Limitations
 -----------
 1. Spurious "deadlock" messages when loading omapdrm_pvr kernel module
-2. Supports only DRM/KMS and Wayland. No support for X11 window system or Null WS
+2. Supports only DRM/KMS, Wayland and X11. No support for Null Window System
 3. Kernel panic due to drm_kms_helper sometimes. Reset the board if it occurs
 4. Wayland simple-egl example throws a gbm_import_bo error
 5. Mmap error observed with Weston with cursor surfaces
@@ -57,8 +57,7 @@ Package Contents
 targetfs/
 ---------
 
-The 'targetfs' folder contains the user mode modules of 
-SGX DDK for OMAP5/DRA7xx.
+The 'targetfs' folder contains the user mode modules of SGX DDK for OMAP5/DRA7xx.
 
 
 *********************************************************************
@@ -85,6 +84,10 @@ host $ export DISCIMAGE=<path_to_target_root_filesystem>
 host $ cd <path_to_package>
 host $ sudo -E make install
 
+PVR EXA driver is copied into /usr/lib/xorg/modules/drivers of the target 
+filesystem. The SDK system integrator should copy the EXA driver into 
+the relevant X11 driver directory.
+
 
 *********************************************************************
 *                         LOAD                                      *
@@ -98,7 +101,8 @@ OMAP DRM
 
 The omapdrm_pvr driver is expected to be loaded before an OpenGLES 
 application can be exercised. The pvrsrvinit handles the loading of the 
-necessary DRM driver.
+necessary DRM driver. This step will not be required for X11 window 
+system with PVR EXA driver.
 
 target $ pvrsrvinit
 
@@ -120,3 +124,11 @@ The DDK has been verified using Weston compositor that has been included
 with the SDK file system. This application uses Wayland.
 
 target $ weston --connector=4 
+
+The DDK has been verified with X11 server included in the SDK file system.
+DRI2 support has been validated.
+
+target $ export DISPLAY=:0
+target $ xinit &
+target $ xgles2test1
+target $ xmultiegltest
