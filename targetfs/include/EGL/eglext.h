@@ -134,15 +134,15 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLDESTROYIMAGEKHRPROC) (EGLDisplay dpy, EGL
 #define EGL_TEXTURE_EXTERNAL_WL         0x31DA
 
 struct wl_display;
-struct wl_buffer;
+struct wl_resource;
 #ifdef EGL_EGLEXT_PROTOTYPES
 EGLAPI EGLBoolean EGLAPIENTRY eglBindWaylandDisplayWL(EGLDisplay dpy, struct wl_display *display);
 EGLAPI EGLBoolean EGLAPIENTRY eglUnbindWaylandDisplayWL(EGLDisplay dpy, struct wl_display *display);
-EGLAPI EGLBoolean EGLAPIENTRY eglQueryWaylandBufferWL(EGLDisplay dpy, struct wl_buffer *buffer, EGLint attribute, EGLint *value);
+EGLAPI EGLBoolean EGLAPIENTRY eglQueryWaylandBufferWL(EGLDisplay dpy, struct wl_resource *resource, EGLint attribute, EGLint *value);
 #endif
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLBINDWAYLANDDISPLAYWL) (EGLDisplay dpy, struct wl_display *display);
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLUNBINDWAYLANDDISPLAYWL) (EGLDisplay dpy, struct wl_display *display);
-typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYWAYLANDBUFFERWL) (EGLDisplay dpy, struct wl_buffer *buffer, EGLint attribute, EGLint *value);
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYWAYLANDBUFFERWL) (EGLDisplay dpy, struct wl_resource *resource, EGLint attribute, EGLint *value);
 #endif
 
 
@@ -264,17 +264,16 @@ EGLAPI EGLBoolean EGLAPIENTRY eglPostSubBufferNV (EGLDisplay dpy, EGLSurface sur
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLPOSTSUBBUFFERNVPROC) (EGLDisplay dpy, EGLSurface surface, EGLint x, EGLint y, EGLint width, EGLint height);
 #endif
 
-#ifndef EGL_ROB_raw_video
-#  define EGL_ROB_raw_video 1
-#  define EGL_RAW_VIDEO_ROB						0x333A	/* eglCreateImageKHR target */
-#  define EGL_GL_VIDEO_FOURCC_ROB				0x3331	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_WIDTH_ROB				0x3332	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_HEIGHT_ROB				0x3333	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_BYTE_STRIDE_ROB			0x3334	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_BYTE_SIZE_ROB			0x3335	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_YUV_FLAGS_ROB			0x3336	/* eglCreateImageKHR attribute */
+#ifndef EGL_TI_raw_video
+#  define EGL_TI_raw_video 1
+#  define EGL_RAW_VIDEO_TI				0x333A	/* eglCreateImageKHR target */
+#  define EGL_GL_VIDEO_FOURCC_TI			0x3331	/* eglCreateImageKHR attribute */
+#  define EGL_GL_VIDEO_WIDTH_TI				0x3332	/* eglCreateImageKHR attribute */
+#  define EGL_GL_VIDEO_HEIGHT_TI			0x3333	/* eglCreateImageKHR attribute */
+#  define EGL_GL_VIDEO_BYTE_STRIDE_TI			0x3334	/* eglCreateImageKHR attribute */
+#  define EGL_GL_VIDEO_BYTE_SIZE_TI			0x3335	/* eglCreateImageKHR attribute */
+#  define EGL_GL_VIDEO_YUV_FLAGS_TI			0x3336	/* eglCreateImageKHR attribute */
 #endif
-
 
 #ifdef __cplusplus
 }
