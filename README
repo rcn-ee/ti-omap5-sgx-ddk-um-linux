@@ -27,28 +27,26 @@ The kernel mode drivers for SGX are available at:
 https://git.ti.com/graphics/omap5-sgx-ddk-linux
 
 The OMAP 5430 kernel drivers follow TI's kernel tree hosted at:
-http://omapzoom.org/?p=kernel/omap.git;a=shortlog;h=refs/heads/p-ti-glsdk-3.8.y
+http://omapzoom.org/?p=kernel/omap.git
 
 ----------
 Highlights
 ----------
 
-This is version 1.9.11 of the TI DDK. It is based on IMG's
+This is version 1.9 of the TI DDK. It is based on IMG's
 1.9 DDK post-beta engineering drop (ED2253347) delivery to TI.
 
-This release supports Wayland 1.0.6 and X11
+This release supports Wayland 1.3.0 and DRM/KMS.
 
 DDK dependencies: gcc 4.7.3, glibc 2.15, libdrm 2.4.41, libgbm 9.0.0, Wayland
-1.0.6
+1.3.0
 
 -----------
 Limitations
 -----------
-1. Spurious "deadlock" messages when loading omapdrm_pvr kernel module
-2. Supports only DRM/KMS, Wayland and X11. No support for Null Window System
-3. Kernel panic due to drm_kms_helper sometimes. Reset the board if it occurs
-4. Wayland simple-egl example throws a gbm_import_bo error
-5. Mmap error observed with Weston with cursor surfaces
+1. Supports only DRM/KMS and Wayland. No support for Null Window System
+2. Killing Wayland simple-egl example leads to a SGX HW recovery
+3. Mmap error observed with Weston with cursor surfaces
 
 ----------------
 Package Contents
@@ -84,11 +82,6 @@ host $ export DISCIMAGE=<path_to_target_root_filesystem>
 host $ cd <path_to_package>
 host $ sudo -E make install
 
-PVR EXA driver is copied into /usr/lib/xorg/modules/drivers of the target 
-filesystem. The SDK system integrator should copy the EXA driver into 
-the relevant X11 driver directory.
-
-
 *********************************************************************
 *                         LOAD                                      *
 *********************************************************************
@@ -101,8 +94,7 @@ OMAP DRM
 
 The omapdrm_pvr driver is expected to be loaded before an OpenGLES 
 application can be exercised. The pvrsrvinit handles the loading of the 
-necessary DRM driver. This step will not be required for X11 window 
-system with PVR EXA driver.
+necessary DRM driver.
 
 target $ pvrsrvinit
 
@@ -123,12 +115,4 @@ target $ kmscube
 The DDK has been verified using Weston compositor that has been included
 with the SDK file system. This application uses Wayland.
 
-target $ weston --connector=4 
-
-The DDK has been verified with X11 server included in the SDK file system.
-DRI2 support has been validated.
-
-target $ export DISPLAY=:0
-target $ xinit &
-target $ xgles2test1
-target $ xmultiegltest
+target $ weston --connector=4 --tty=1
