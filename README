@@ -46,7 +46,8 @@ Limitations
 -----------
 1. Supports only DRM/KMS and Wayland. No support for Null Window System
 2. Killing Wayland simple-egl example leads to a SGX HW recovery
-3. Mmap error observed with Weston with cursor surfaces
+3. Killing Weston when OpenGL application is running leads to kernel crash
+4. Tearing artifacts observed with high render load
 
 ----------------
 Package Contents

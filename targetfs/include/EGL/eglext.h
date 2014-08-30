@@ -264,15 +264,33 @@ EGLAPI EGLBoolean EGLAPIENTRY eglPostSubBufferNV (EGLDisplay dpy, EGLSurface sur
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLPOSTSUBBUFFERNVPROC) (EGLDisplay dpy, EGLSurface surface, EGLint x, EGLint y, EGLint width, EGLint height);
 #endif
 
+/* fourcc formats supported by TI EGLImage extension */
+#ifndef FOURCC
+#define FOURCC(a, b, c, d) ((uint32_t)(uint8_t)(a) | ((uint32_t)(uint8_t)(b) << 8) | ((uint32_t)(uint8_t)(c) << 16) | ((uint32_t)(uint8_t)(d) << 24 ))
+
+#define FOURCC_TI_YUYV		FOURCC('Y', 'U', 'Y', 'V')
+#define FOURCC_TI_NV12		FOURCC('N', 'V', '1', '2')
+#define FOURCC_TI_YV12		FOURCC('Y', 'V', '1', '2')
+#define FOURCC_TI_I420		FOURCC('I', '4', '2', '0')
+#endif
+
 #ifndef EGL_TI_raw_video
-#  define EGL_TI_raw_video 1
-#  define EGL_RAW_VIDEO_TI				0x333A	/* eglCreateImageKHR target */
-#  define EGL_GL_VIDEO_FOURCC_TI			0x3331	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_WIDTH_TI				0x3332	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_HEIGHT_TI			0x3333	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_BYTE_STRIDE_TI			0x3334	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_BYTE_SIZE_TI			0x3335	/* eglCreateImageKHR attribute */
-#  define EGL_GL_VIDEO_YUV_FLAGS_TI			0x3336	/* eglCreateImageKHR attribute */
+#define EGL_TI_raw_video 1
+#define EGL_RAW_VIDEO_TI			0x333A	/* eglCreateImageKHR target */
+#define EGL_RAW_VIDEO_TI_DMABUF			0x333B  /* eglCreateImageKHR target */
+#define EGL_GL_VIDEO_FOURCC_TI			0x3331	/* eglCreateImageKHR attribute */
+#define EGL_GL_VIDEO_WIDTH_TI			0x3332	/* eglCreateImageKHR attribute */
+#define EGL_GL_VIDEO_HEIGHT_TI			0x3333	/* eglCreateImageKHR attribute */
+#define EGL_GL_VIDEO_BYTE_STRIDE_TI		0x3334	/* eglCreateImageKHR attribute */
+#define EGL_GL_VIDEO_BYTE_SIZE_TI		0x3335	/* eglCreateImageKHR attribute */
+#define EGL_GL_VIDEO_YUV_FLAGS_TI		0x3336	/* eglCreateImageKHR attribute */
+#endif
+
+#ifndef EGLIMAGE_FLAGS_YUV_CONFORMANT_RANGE
+#define EGLIMAGE_FLAGS_YUV_CONFORMANT_RANGE (0 << 0)
+#define EGLIMAGE_FLAGS_YUV_FULL_RANGE       (1 << 0)
+#define EGLIMAGE_FLAGS_YUV_BT601            (0 << 1)
+#define EGLIMAGE_FLAGS_YUV_BT709            (1 << 1)
 #endif
 
 #ifdef __cplusplus
