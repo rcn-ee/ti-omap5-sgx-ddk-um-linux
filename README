@@ -17,7 +17,7 @@ TEST
 *********************************************************************
 
 This is the Texas Instruments Inc (TI) Driver Development Kit (DDK)
-for the SGX graphics cores on Linux OMAP platforms. 
+for the SGX graphics cores on TI Linux platforms. 
 
 This package contains the user mode libraries and binaries for SGX. These
 user mode libraries are developed by Imagination Technologies (IMG). TI 
@@ -26,28 +26,22 @@ provides additional enhancements and integration for Linux OMAP.
 The kernel mode drivers for SGX are available at:
 https://git.ti.com/graphics/omap5-sgx-ddk-linux
 
-The OMAP 5430 kernel drivers follow TI's kernel tree hosted at:
-http://omapzoom.org/?p=kernel/omap.git
-
 ----------
 Highlights
 ----------
 
-This is version 1.9 of the TI DDK. It is based on IMG's
-1.9 DDK post-beta engineering drop (ED2253347) delivery to TI.
+This is version 1.14 of the TI DDK based on IMG's post-beta engineering drop
+(ED3699939) delivery to TI.
 
-This release supports Wayland 1.3.0 and DRM/KMS.
+This release supports Wayland 1.9, TI derivative of GBM and NullDRM.
 
-DDK dependencies: gcc 4.7.3, glibc 2.15, libdrm 2.4.41, libgbm 9.0.0, Wayland
-1.3.0
+DDK dependencies: libdrm 2.4.66, libgbm 10.0.0, Wayland 1.9
 
 -----------
 Limitations
 -----------
-1. Supports only DRM/KMS and Wayland. No support for Null Window System
-2. Killing Wayland simple-egl example leads to a SGX HW recovery
-3. Killing Weston when OpenGL application is running leads to kernel crash
-4. Tearing artifacts observed with high render load
+1. Wayland OpenGLES application (such as weston-simple-egl) leads to an
+   SGX HW recovery
 
 ----------------
 Package Contents
@@ -56,7 +50,8 @@ Package Contents
 targetfs/
 ---------
 
-The 'targetfs' folder contains the user mode modules of SGX DDK for OMAP5/DRA7xx.
+The 'targetfs' folder contains the user mode modules of SGX DDK for TI
+platforms.
 
 
 *********************************************************************
@@ -80,6 +75,11 @@ Untar the package and run the following commands on the host with the
 target filesystem mounted:
 
 host $ export DISCIMAGE=<path_to_target_root_filesystem>
+host $ export TARGET_PRODUCT=<SoC value>
+       # allowed values are: 
+       # ti335x = All AM33x derivatives
+       # ti437x = All AM43x derivatives
+       # jacinto6evm = All DRA7xx / AM57x derivatives
 host $ cd <path_to_package>
 host $ sudo -E make install
 
@@ -93,11 +93,11 @@ The procedure to load the DDK kernel drivers is given below.
 OMAP DRM
 --------
 
-The omapdrm_pvr driver is expected to be loaded before an OpenGLES 
-application can be exercised. The pvrsrvinit handles the loading of the 
+The pvrsrvkm driver is expected to be loaded before an OpenGLES 
+application can be exercised. The rc.pvr handles the loading of the 
 necessary DRM driver.
 
-target $ pvrsrvinit
+target $ /etc/init.d/rc.pvr start
 
 
 *********************************************************************
@@ -116,4 +116,4 @@ target $ kmscube
 The DDK has been verified using Weston compositor that has been included
 with the SDK file system. This application uses Wayland.
 
-target $ weston --connector=4 --tty=1
+target $ weston --tty=1 --idle-time=0

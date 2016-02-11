@@ -1,20 +1,21 @@
 DESTDIR ?= ${DISCIMAGE}
-SRCDIR = ./targetfs
+TARGET_PRODUCT ?= jacinto6evm
+SRCDIR = ./targetfs/${TARGET_PRODUCT}
 
 prefix = /usr
-libdir = ${prefix}/lib
+etcdir = /etc
 incdir = ${prefix}/include
-bindir = ${prefix}/bin
-shrdir = ${prefix}/share
+libdir = ${prefix}/lib
+locdir = ${prefix}/local
 
 all:
 
 install: 
-	mkdir -p ${DESTDIR}${libdir}
+	mkdir -p ${DESTDIR}${etcdir}
 	mkdir -p ${DESTDIR}${incdir}
-	mkdir -p ${DESTDIR}${bindir}
-	mkdir -p ${DESTDIR}${shrdir}
-	cp -ar ${SRCDIR}/lib/* ${DESTDIR}${libdir}
+	mkdir -p ${DESTDIR}${libdir}
+	mkdir -p ${DESTDIR}${locdir}
+	cp -ar ${SRCDIR}/etc/* ${DESTDIR}${etcdir}
 	cp -ar ${SRCDIR}/include/* ${DESTDIR}${incdir}
-	cp -ar ${SRCDIR}/bin/* ${DESTDIR}${bindir}
-	cp -ar ${SRCDIR}/share/* ${DESTDIR}${shrdir}
+	cp -ar ${SRCDIR}/lib/* ${DESTDIR}${libdir}
+	cp -ar ${SRCDIR}/local/* ${DESTDIR}${locdir}
