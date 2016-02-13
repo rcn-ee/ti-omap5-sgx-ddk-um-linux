@@ -41,7 +41,7 @@ load_pvr()
 	fi
 
 	# Run the PVR initialisation server
-	if ! /usr/local/bin/pvrsrvctl --start --no-module; then return; fi
+	if ! /usr/bin/pvrsrvctl --start --no-module; then return; fi
 
 	# Load remaining modules.
 	#
