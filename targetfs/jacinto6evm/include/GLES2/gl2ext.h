@@ -1607,7 +1607,7 @@ typedef void (GL_APIENTRYP PFNGLTEXTURESTORAGE3DEXTPROC) (GLuint texture, GLenum
 #ifndef GL_EXT_draw_buffers
 #define GL_EXT_draw_buffers 1
 #ifdef GL_GLEXT_PROTOTYPES
-GL_API_EXT void GL_APIENTRY glDrawBuffersEXT (GLsizei n, const GLenum *bufs);
+GL_APICALL void GL_APIENTRY glDrawBuffersEXT (GLsizei n, const GLenum *bufs);
 #endif
 typedef void (GL_APIENTRYP PFNGLDRAWBUFFERSEXTPROC) (GLsizei n, const GLenum *bufs);
 #endif
