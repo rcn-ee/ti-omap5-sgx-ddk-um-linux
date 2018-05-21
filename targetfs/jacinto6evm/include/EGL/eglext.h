@@ -141,6 +141,26 @@ EGLAPI EGLBoolean EGLAPIENTRY eglQueryWaylandBufferWL(EGLDisplay dpy, struct wl_
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLBINDWAYLANDDISPLAYWL) (EGLDisplay dpy, struct wl_display *display);
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLUNBINDWAYLANDDISPLAYWL) (EGLDisplay dpy, struct wl_display *display);
 typedef EGLBoolean (EGLAPIENTRYP PFNEGLQUERYWAYLANDBUFFERWL) (EGLDisplay dpy, struct wl_resource *resource, EGLint attribute, EGLint *value);
+
+#ifndef EGL_TI_drm_extended_caps_wl_buffer
+#define EGL_TI_drm_extended_caps_wl_buffer 1
+
+#ifdef EGL_EGLEXT_PROTOTYPES
+/*
+ * strides, offsets and drm_flink_names must be arrays
+ * with at least 3 uint32_t elements
+ */
+EGLAPI EGLBoolean EGLAPIENTRY eglDRMExtendedInfoFromWaylandBufferTI(EGLDisplay dpy, struct wl_resource *wl_buffer,
+		uint32_t *width, uint32_t *height, uint32_t *format, uint32_t *strides, uint32_t *offsets, uint32_t *drm_flink_names);
+EGLAPI EGLBoolean EGLAPIENTRY eglDRMFBSetWaylandBufferTI(EGLDisplay dpy, struct wl_resource *wl_buffer, EGLint drm_fd, uint32_t drm_fb_id);
+EGLAPI EGLBoolean EGLAPIENTRY eglDRMFBGetWaylandBufferTI(EGLDisplay dpy, struct wl_resource *wl_buffer, uint32_t *drm_fb_id);
+#endif
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLDRMEXTENDEDINFOFROMWAYLANDBUFFERTI) (EGLDisplay dpy, struct wl_resource *wl_buffer,
+		uint32_t *width, uint32_t *height, uint32_t *format, uint32_t *strides, uint32_t *offsets, uint32_t *drm_flink_names);
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLDRMFBSETWAYLANDBUFFERTI) (EGLDisplay dpy, struct wl_resource *wl_buffer, EGLint drm_fd, uint32_t drm_fb_id);
+typedef EGLBoolean (EGLAPIENTRYP PFNEGLDRMFBGETWAYLANDBUFFERTI) (EGLDisplay dpy, struct wl_resource *wl_buffer, uint32_t *drm_fb_id);
+#endif
+
 #endif
 
 #if KHRONOS_SUPPORT_INT64   /* EGLTimeKHR requires 64-bit uint support */
