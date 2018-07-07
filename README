@@ -30,18 +30,16 @@ https://git.ti.com/graphics/omap5-sgx-ddk-linux
 Highlights
 ----------
 
-This is version 1.14 of the TI DDK based on IMG's post-beta engineering drop
-(ED3699939) delivery to TI.
+This is version 1.17 of the TI DDK based on IMG's RTM drop
+(4948957) delivery to TI.
 
-This release supports Wayland 1.9, TI derivative of GBM and NullDRM.
+This release supports Wayland 2.0, TI derivative of GBM and NullDRM.
 
-DDK dependencies: libdrm 2.4.66, libgbm 10.0.0, Wayland 1.9
+DDK dependencies: libdrm 2.4.83, libgbm 10.0.0, Wayland 2.0
 
 -----------
 Limitations
 -----------
-1. Wayland OpenGLES application (such as weston-simple-egl) leads to an
-   SGX HW recovery
 
 ----------------
 Package Contents
@@ -77,9 +75,7 @@ target filesystem mounted:
 host $ export DISCIMAGE=<path_to_target_root_filesystem>
 host $ export TARGET_PRODUCT=<SoC value>
        # allowed values are: 
-       # ti335x = All AM33x derivatives
-       # ti437x = All AM43x derivatives
-       # jacinto6evm = All DRA7xx / AM57x derivatives
+       # ti654x = All AMg5x derivatives
 host $ cd <path_to_package>
 host $ sudo -E make install
 
