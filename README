@@ -75,7 +75,10 @@ target filesystem mounted:
 host $ export DISCIMAGE=<path_to_target_root_filesystem>
 host $ export TARGET_PRODUCT=<SoC value>
        # allowed values are: 
-       # ti654x = All AMg5x derivatives
+       # ti335x = All AM335x derivatives
+       # ti437x = All AM437x derivatives
+       # jacinto6evm = All DRA7x and AM57xx derivatives
+       # ti654x = All AM65x derivatives
 host $ cd <path_to_package>
 host $ sudo -E make install
 
