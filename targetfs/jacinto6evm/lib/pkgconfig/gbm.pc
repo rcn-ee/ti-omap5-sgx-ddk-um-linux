@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/gbm
+
+Name: gbm
+Description: PowerVR gbm library
+Version: 13.0
+Libs: -L${libdir} -lgbm 
+Cflags: -I${includedir}
