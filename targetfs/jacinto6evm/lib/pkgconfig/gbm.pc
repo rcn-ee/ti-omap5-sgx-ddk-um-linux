@@ -1,10 +1,10 @@
 prefix=/usr
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
-includedir=${prefix}/include/gbm
+libdir=${prefix}/lib
+includedir=${prefix}/include
 
 Name: gbm
-Description: PowerVR gbm library
-Version: 13.0
-Libs: -L${libdir} -lgbm 
+Description: Mesa gbm library
+Version: 19.1.0
+Libs: -L${libdir} -lgbm
+Libs.private: -ldl
 Cflags: -I${includedir}
