@@ -13,9 +13,7 @@ all:
 install: 
 	mkdir -p ${DESTDIR}${etcdir}
 	mkdir -p ${DESTDIR}${bindir}
-	mkdir -p ${DESTDIR}${incdir}
 	mkdir -p ${DESTDIR}${libdir}
 	cp -ar ${SRCDIR}/etc/* ${DESTDIR}${etcdir}
 	cp -ar ${SRCDIR}/bin/* ${DESTDIR}${bindir}
-	cp -ar ${SRCDIR}/include/* ${DESTDIR}${incdir}
 	cp -ar ${SRCDIR}/lib/* ${DESTDIR}${libdir}
