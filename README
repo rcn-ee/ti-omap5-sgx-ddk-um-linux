@@ -33,9 +33,7 @@ Highlights
 This is version 1.17 of the TI DDK based on IMG's RTM drop
 (4948957) delivery to TI.
 
-This release supports Wayland 2.0, TI derivative of GBM and NullDRM.
-
-DDK dependencies: libdrm 2.4.83, libgbm 10.0.0, Wayland 2.0
+DDK dependencies: libdrm 2.4.83
 
 -----------
 Limitations
