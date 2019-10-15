@@ -1,10 +1,10 @@
 prefix=/usr
-exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
+libdir=${prefix}/lib
 includedir=${prefix}/include
 
-Name: GLES_CM
-Description: PowerVR GLES_CM library
-Version: 8.14
-Libs: -L${libdir} -lGLES_CM 
+Name: gles_cm
+Description: Mesa OpenGL ES 1.1 CM library
+Version: 19.1.6
+Libs: -L${libdir} -lGLES_CM
+Libs.private: -lpthread -lm -ldl -pthread
 Cflags: -I${includedir}
