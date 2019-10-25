@@ -2,7 +2,7 @@
 #define __eglplatform_h_
 
 /*
-** Copyright (c) 2007-2009 The Khronos Group Inc.
+** Copyright (c) 2007-2016 The Khronos Group Inc.
 **
 ** Permission is hereby granted, free of charge, to any person obtaining a
 ** copy of this software and/or associated documentation files (the
@@ -25,7 +25,7 @@
 */
 
 /* Platform-specific types and definitions for egl.h
- * $Revision: 1.10 $ on $Date: 2010/06/23 10:28:17 $
+ * $Revision: 30994 $ on $Date: 2015-04-30 13:36:48 -0700 (Thu, 30 Apr 2015) $
  *
  * Adopters may modify khrplatform.h and this file to suit their platform.
  * You are encouraged to submit all modifications to the Khronos group so that
@@ -60,9 +60,14 @@
  * Windows Device Context. They must be defined in platform-specific
  * code below. The EGL-prefixed versions of Native*Type are the same
  * types, renamed in EGL 1.3 so all types in the API start with "EGL".
+ *
+ * Khronos STRONGLY RECOMMENDS that you use the default definitions
+ * provided below, since these changes affect both binary and source
+ * portability of applications using EGL running on different EGL
+ * implementations.
  */
 
-#if  defined(__VC32__) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__) /* Win32 and WinCE */
+#if defined(_WIN32) || defined(__VC32__) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__) /* Win32 and WinCE */
 #ifndef WIN32_LEAN_AND_MEAN
 #define WIN32_LEAN_AND_MEAN 1
 #endif
@@ -72,15 +77,48 @@ typedef HDC     EGLNativeDisplayType;
 typedef HBITMAP EGLNativePixmapType;
 typedef HWND    EGLNativeWindowType;
 
-#else
-#if defined(__WINSCW__)
+#elif defined(__WINSCW__) || defined(__SYMBIAN32__)  /* Symbian */
 
 typedef int   EGLNativeDisplayType;
 typedef void *EGLNativeWindowType;
 typedef void *EGLNativePixmapType;
 
+#elif defined(WL_EGL_PLATFORM)
+
+typedef struct wl_display     *EGLNativeDisplayType;
+typedef struct wl_egl_pixmap  *EGLNativePixmapType;
+typedef struct wl_egl_window  *EGLNativeWindowType;
+
+#elif defined(__GBM__)
+
+typedef struct gbm_device  *EGLNativeDisplayType;
+typedef struct gbm_bo      *EGLNativePixmapType;
+typedef void               *EGLNativeWindowType;
+
+#elif defined(__ANDROID__) || defined(ANDROID)
+
+struct ANativeWindow;
+struct egl_native_pixmap_t;
+
+typedef struct ANativeWindow*           EGLNativeWindowType;
+typedef struct egl_native_pixmap_t*     EGLNativePixmapType;
+typedef void*                           EGLNativeDisplayType;
+
+#elif defined(USE_OZONE)
+
+typedef intptr_t EGLNativeDisplayType;
+typedef intptr_t EGLNativeWindowType;
+typedef intptr_t EGLNativePixmapType;
+
+#elif defined(__unix__) || defined(__APPLE__)
+
+#if defined(MESA_EGL_NO_X11_HEADERS)
+
+typedef void            *EGLNativeDisplayType;
+typedef khronos_uintptr_t EGLNativePixmapType;
+typedef khronos_uintptr_t EGLNativeWindowType;
+
 #else
-#if defined(__unix__) && defined(SUPPORT_X11)
 
 /* X11 (tentative)  */
 #include <X11/Xlib.h>
@@ -90,21 +128,18 @@ typedef Display *EGLNativeDisplayType;
 typedef Pixmap   EGLNativePixmapType;
 typedef Window   EGLNativeWindowType;
 
+#endif /* MESA_EGL_NO_X11_HEADERS */
+
+#elif defined(__HAIKU__)
+
+#include <kernel/image.h>
+
+typedef void              *EGLNativeDisplayType;
+typedef khronos_uintptr_t  EGLNativePixmapType;
+typedef khronos_uintptr_t  EGLNativeWindowType;
+
 #else
-
-/* NULLWS fallback */
-
-#if defined(_WIN64) ||  __WORDSIZE == 64
-typedef khronos_int64_t EGLNativeDisplayType;
-#else
-typedef int EGLNativeDisplayType;
-#endif
-
-typedef void*	EGLNativePixmapType;
-typedef void*	EGLNativeWindowType;
-
-#endif
-#endif
+#error "Platform not recognized"
 #endif
 
 /* EGL 1.2 types, renamed for consistency in EGL 1.3 */
@@ -122,5 +157,12 @@ typedef EGLNativeWindowType  NativeWindowType;
  */
 typedef khronos_int32_t EGLint;
 
+
+/* C++ / C typecast macros for special EGL handle values */
+#if defined(__cplusplus)
+#define EGL_CAST(type, value) (static_cast<type>(value))
+#else
+#define EGL_CAST(type, value) ((type) (value))
+#endif
 
 #endif /* __eglplatform_h */

@@ -1,0 +1,10 @@
+prefix=/usr
+libdir=${prefix}/lib
+includedir=${prefix}/include
+
+Name: glesv1_cm
+Description: Mesa OpenGL ES 1.1 CM library
+Version: 19.1.6
+Libs: -L${libdir} -lGLESv1_CM
+Libs.private: -pthread -lm -lpthread -ldl
+Cflags: -I${includedir}
