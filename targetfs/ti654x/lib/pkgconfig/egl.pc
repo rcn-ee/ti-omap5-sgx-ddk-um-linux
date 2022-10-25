@@ -4,8 +4,8 @@ includedir=${prefix}/include
 
 Name: egl
 Description: Mesa EGL Library
-Version: 19.1.6
-Requires.private: libdrm >= 2.4.75
+Version: 22.0.3
+Requires.private: libdrm >=  2.4.75
 Libs: -L${libdir} -lEGL
-Libs.private: -pthread -lm -lpthread -ldl
-Cflags: -I${includedir} -DMESA_EGL_NO_X11_HEADERS
+Libs.private: -lpthread -pthread -lm
+Cflags: -I${includedir} -DEGL_NO_X11

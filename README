@@ -33,9 +33,7 @@ Highlights
 This is version 1.17 of the TI DDK based on IMG's RTM drop
 (4948957) delivery to TI.
 
-This release supports Wayland 2.0, TI derivative of GBM and NullDRM.
-
-DDK dependencies: libdrm 2.4.83, libgbm 10.0.0, Wayland 2.0
+DDK dependencies: glibc 2.35, libdrm 2.4.110
 
 -----------
 Limitations
@@ -72,12 +70,12 @@ for building and installing the kernel mode driver.
 Untar the package and run the following commands on the host with the 
 target filesystem mounted:
 
-host $ export DISCIMAGE=<path_to_target_root_filesystem>
+host $ export DESTDIR=<path_to_target_root_filesystem>
 host $ export TARGET_PRODUCT=<SoC value>
-       # allowed values are: 
+       # allowed values are:
        # ti335x = All AM335x derivatives
        # ti437x = All AM437x derivatives
-       # jacinto6evm = All DRA7x and AM57xx derivatives
+       # ti572x = All DRA7x and AM57xx derivatives
        # ti654x = All AM65x derivatives
 host $ cd <path_to_package>
 host $ sudo -E make install
