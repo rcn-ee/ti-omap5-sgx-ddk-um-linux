@@ -1,5 +1,5 @@
 DESTDIR ?= ${DISCIMAGE}
-TARGET_PRODUCT ?= jacinto6evm
+TARGET_PRODUCT ?= ti654x
 SRCDIR = ./targetfs/${TARGET_PRODUCT}
 
 prefix = /usr
