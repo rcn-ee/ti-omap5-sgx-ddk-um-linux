@@ -12,8 +12,8 @@ BUILD ?= release
 SYSTEMD ?= false
 UDEV ?= false
 
-COMMONDIR = ./targetfs/common
-PRODUCTDIR = ./targetfs/${TARGET_PRODUCT}/${WINDOW_SYSTEM}/${BUILD}
+COMMONDIR := ./targetfs/common
+PRODUCTDIR := ./targetfs/${TARGET_PRODUCT}/${WINDOW_SYSTEM}/${BUILD}
 
 sysconfdir ?= /etc
 bindir ?= /usr/bin
@@ -26,6 +26,7 @@ install:
 	# prime directories
 	mkdir -p ${DESTDIR}/${bindir}
 	mkdir -p ${DESTDIR}/${libdir}
+	rm -rf ${COMMONDIR}/usr/lib
 	# install
 	if $(UDEV); then \
 		mkdir -p ${COMMONDIR}/usr/lib/udev/rules.d/ ; \
@@ -33,7 +34,7 @@ install:
 			${COMMONDIR}/50-pvrsrvctl.rules.template \
 		> ${COMMONDIR}/usr/lib/udev/rules.d/50-pvrsrvctl.rules ; \
 		cp -R -P ${COMMONDIR}/usr/lib/*    ${DESTDIR}/${libdir} ; \
-	elif $(SYSTEMD) \
+	elif $(SYSTEMD); then \
 		mkdir -p ${COMMONDIR}/usr/lib/systemd/system/ ; \
 		sed 's;{{BINDIR}};${bindir};g' \
 			${COMMONDIR}/pvrsrvctl.service.template \
@@ -45,6 +46,8 @@ install:
 	fi
 	cp -R -P ${PRODUCTDIR}/usr/bin/*    ${DESTDIR}/${bindir}
 	cp -R -P ${PRODUCTDIR}/usr/lib/*    ${DESTDIR}/${libdir}
+	# clean template dir
+	rm -rf ${COMMONDIR}/usr/lib
 
 clean:
 	$(info Removing init scripts in favor of common ones)
