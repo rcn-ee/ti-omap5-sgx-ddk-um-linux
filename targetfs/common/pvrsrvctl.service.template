@@ -1,0 +1,13 @@
+[Unit]
+Description=Initialize the Imagination PowerVR GPU
+Before=graphical.target
+
+[Service]
+Type=oneshot
+ExecStart={{BINDIR}}/pvrsrvctl --start --no-module
+RemainAfterExit=true
+ExecStop={{BINDIR}}/pvrsrvctl --stop --no-module
+StandardOutput=journal
+
+[Install]
+WantedBy=graphical.target

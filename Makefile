@@ -2,8 +2,14 @@ TARGET_PRODUCT ?= ti335x_linux
 ifneq ("${TARGET_PRODUCT}",$(filter "${TARGET_PRODUCT}","ti335x_linux" "ti437x_linux" "ti572x_linux" "ti654x_linux"))
 $(error Unsupported TARGET_PRODUCT: ${TARGET_PRODUCT})
 endif
+
+ifeq (${DESTDIR},)
+  $(error DESTDIR unset, if you wish to install to the rootfs of the current system set DESTDIR=/)
+endif
+
 WINDOW_SYSTEM ?= lws-generic
 BUILD ?= release
+SYSTEMD ?= true
 
 COMMONDIR = ./targetfs/common
 PRODUCTDIR = ./targetfs/${TARGET_PRODUCT}/${WINDOW_SYSTEM}/${BUILD}
@@ -17,11 +23,19 @@ all: ;
 
 install:
 	# prime directories
-	mkdir -p ${DESTDIR}/${sysconfdir}
 	mkdir -p ${DESTDIR}/${bindir}
 	mkdir -p ${DESTDIR}/${libdir}
 	# install
-	cp -R -P ${COMMONDIR}/etc/*     ${DESTDIR}/${sysconfdir}
+	if $(SYSTEMD); then \
+		mkdir -p ${COMMONDIR}/usr/lib/systemd/system/ ; \
+		sed 's;{{BINDIR}};${bindir};g' \
+			${COMMONDIR}/pvrsrvctl.service.template \
+		> ${COMMONDIR}/usr/lib/systemd/system/pvrsrvctl.service ; \
+		cp -R -P ${COMMONDIR}/usr/lib/*    ${DESTDIR}/${libdir} ; \
+	else \
+		mkdir -p ${DESTDIR}/${sysconfdir} ; \
+		cp -R -P ${COMMONDIR}/etc/*     ${DESTDIR}/${sysconfdir} ; \
+	fi
 	cp -R -P ${PRODUCTDIR}/usr/bin/*    ${DESTDIR}/${bindir}
 	cp -R -P ${PRODUCTDIR}/usr/lib/*    ${DESTDIR}/${libdir}
 
