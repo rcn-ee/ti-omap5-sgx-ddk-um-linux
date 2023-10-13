@@ -9,7 +9,8 @@ endif
 
 WINDOW_SYSTEM ?= lws-generic
 BUILD ?= release
-SYSTEMD ?= true
+SYSTEMD ?= false
+UDEV ?= false
 
 COMMONDIR = ./targetfs/common
 PRODUCTDIR = ./targetfs/${TARGET_PRODUCT}/${WINDOW_SYSTEM}/${BUILD}
@@ -26,7 +27,13 @@ install:
 	mkdir -p ${DESTDIR}/${bindir}
 	mkdir -p ${DESTDIR}/${libdir}
 	# install
-	if $(SYSTEMD); then \
+	if $(UDEV); then \
+		mkdir -p ${COMMONDIR}/usr/lib/udev/rules.d/ ; \
+		sed 's;{{BINDIR}};${bindir};g' \
+			${COMMONDIR}/50-pvrsrvctl.rules.template \
+		> ${COMMONDIR}/usr/lib/udev/rules.d/50-pvrsrvctl.rules ; \
+		cp -R -P ${COMMONDIR}/usr/lib/*    ${DESTDIR}/${libdir} ; \
+	elif $(SYSTEMD) \
 		mkdir -p ${COMMONDIR}/usr/lib/systemd/system/ ; \
 		sed 's;{{BINDIR}};${bindir};g' \
 			${COMMONDIR}/pvrsrvctl.service.template \
