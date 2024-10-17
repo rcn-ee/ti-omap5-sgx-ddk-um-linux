@@ -1,10 +1,16 @@
 TARGET_PRODUCT ?= ti335x_linux
-ifneq ("${TARGET_PRODUCT}",$(filter "${TARGET_PRODUCT}","ti335x_linux" "ti437x_linux" "ti572x_linux" "ti654x_linux"))
-$(error Unsupported TARGET_PRODUCT: ${TARGET_PRODUCT})
+
+SUPPORTED_PRODUCTS := $(shell for x in ./targetfs/*_linux; do basename "$$x"; done)
+$(info Supported products: $(SUPPORTED_PRODUCTS))
+
+ifeq ($(filter $(TARGET_PRODUCT),$(SUPPORTED_PRODUCTS)),)
+  $(error Unsupported TARGET_PRODUCT: ${TARGET_PRODUCT})
 endif
 
-ifeq (${DESTDIR},)
-  $(error DESTDIR unset, if you wish to install to the rootfs of the current system set DESTDIR=/)
+ifeq ($(TARGET),install)
+  ifeq (${DESTDIR},)
+    $(error DESTDIR unset, if you wish to install to the rootfs of the current system set DESTDIR=/)
+  endif
 endif
 
 WINDOW_SYSTEM ?= lws-generic
@@ -50,17 +56,17 @@ install:
 	rm -rf ${COMMONDIR}/usr/lib
 
 clean:
-	$(info Removing init scripts in favor of common ones)
+	@echo "Removing init scripts in favor of common ones"
 	find targetfs -wholename '*/ti*_*/*/etc/*' -delete
-	$(info Removing bad pkgconfigs)
+	@echo "Removing bad pkgconfigs"
 	find targetfs -wholename '*lws-generic/*/usr/lib/pkgconfig*' -delete
-	$(info Remvoing unnecessary log files)
+	@echo "Remvoing unnecessary log files"
 	find targetfs -name '*.log' -delete
-	$(info Remvoing files with invalid license)
+	@echo "Remvoing files with invalid license"
 	rg -i 'confidential' targetfs/ --files-with-matches | \
 		while IFS='\n' read -r line; do \
 			echo "$$line" ; \
 			rm "$$line" ; \
 		done
-	$(info Remvoing empty directories)
+	@echo "Remvoing empty directories"
 	find targetfs/ -type d -empty -delete
